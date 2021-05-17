@@ -12,6 +12,9 @@ DEFAULT_INDENT = {
     }
 
 
+def represent_none(self, data):
+    return self.represent_scalar(u'tag:yaml.org,2002:null', u'null')
+
 class Cli:
     # pylint: disable=too-few-public-methods
     """ command-line-interface """
@@ -94,6 +97,7 @@ class Formatter:
         yaml.explicit_start = kwargs.get("implicit_start", True)
         yaml.width = kwargs.get("width", None)
         yaml.preserve_quotes = kwargs.get("preserve_quotes", False)
+        yaml.representer.add_representer(type(None), represent_none)
 
         self.yaml = yaml
         self.path = kwargs.get("path", None)
